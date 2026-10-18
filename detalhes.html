@@ -1,10 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes</title>
-	<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .menu-admin {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-admin > a {
+            text-decoration: none;
+        }
+
+        .submenu-admin {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 190px;
+            background: #1b1b1b;
+            border: 1px solid #c9a227;
+            z-index: 1000;
+        }
+
+        .submenu-admin a {
+            display: block;
+            padding: 10px 14px;
+            color: inherit;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .submenu-admin a:hover,
+        .submenu-admin a:focus {
+            background: #333;
+        }
+
+        .menu-admin:hover .submenu-admin,
+        .menu-admin:focus-within .submenu-admin {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,7 +54,7 @@
 <header>
 
     <h1>BRAVUS</h1>
-	
+
     <img src="logo.png" alt="Logo da Bravus">
 
 </header>
@@ -23,24 +65,34 @@
     <a href="detalhes.html">Detalhes</a>
     <a href="autor.html">Sobre o autor</a>
 
+    <div class="menu-admin">
+        <a href="login.html" aria-haspopup="true">Admin</a>
+
+        <div class="submenu-admin">
+            <a href="login.html">Login administrativo</a>
+            <a href="objetos.html">Cadastro de objetos</a>
+            <a href="usuarios.html">Cadastro de usuários</a>
+        </div>
+    </div>
+
 </nav>
 
 <main>
 
-<h2>Detalhes do brinco masculino</h2>
+    <h2>Detalhes do brinco masculino</h2>
 
-<h3>Brinco masculino</h3>
+    <h3>Brinco masculino</h3>
 
-<img src="brinco.png" alt="Brinco masculino">
+    <img src="brinco.png" alt="Brinco masculino">
 
-<p>O brinco masculino é um acessório versátil que combina estilo, personalidade e praticidade. Produzido em aço inoxidável, apresenta um visual moderno e marcante, podendo complementar diferentes estilos e ocasiões.</p>
+    <p>O brinco masculino é um acessório versátil que combina estilo, personalidade e praticidade. Produzido em aço inoxidável, apresenta um visual moderno e marcante, podendo complementar diferentes estilos e ocasiões.</p>
 
-<ul>
-    <li>Material: aço inoxidável</li>
-    <li>Estilo: moderno e versátil</li>
-    <li>Características: resistente, discreto e marcante</li>
-    <li>Indicação: looks casuais e urbanos</li>
-</ul>
+    <ul>
+        <li>Material: aço inoxidável</li>
+        <li>Estilo: moderno e versátil</li>
+        <li>Características: resistente, discreto e marcante</li>
+        <li>Indicação: looks casuais e urbanos</li>
+    </ul>
 
 </main>
 

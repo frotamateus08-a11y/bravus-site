@@ -1,0 +1,776 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Objetos Tema | BRAVUS</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #171717;
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #101010;
+            padding: 22px 6%;
+            border-bottom: 1px solid #383838;
+        }
+
+        .logo {
+            color: #d4af37;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-decoration: none;
+        }
+
+        header p {
+            color: #aaa;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        nav {
+            background-color: #202020;
+            padding: 14px 6%;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #383838;
+        }
+
+        nav a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover,
+        nav a.ativo {
+            color: #d4af37;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1200px;
+            margin: 35px auto;
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .introducao {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .painel {
+            background-color: #222;
+            border: 1px solid #383838;
+            border-radius: 7px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 22px;
+        }
+
+        .formulario-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .campo.completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #494949;
+            border-radius: 4px;
+            background-color: #171717;
+            color: #fff;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #d4af37;
+        }
+
+        .ajuda {
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            border-radius: 4px;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .primario {
+            background-color: #d4af37;
+            color: #171717;
+        }
+
+        .primario:hover {
+            background-color: #f0cf62;
+        }
+
+        .secundario {
+            background-color: #414141;
+            color: #fff;
+        }
+
+        .secundario:hover {
+            background-color: #555;
+        }
+
+        .excluir {
+            background-color: #8b2929;
+            color: #fff;
+        }
+
+        .excluir:hover {
+            background-color: #ad3636;
+        }
+
+        .mensagem {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 4px;
+            background-color: #303020;
+            color: #f0cf62;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 13px 12px;
+            border-bottom: 1px solid #414141;
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #303030;
+            color: #d4af37;
+        }
+
+        td {
+            color: #ddd;
+        }
+
+        .miniatura {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            border-radius: 4px;
+            background-color: #333;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 8px;
+        }
+
+        .acoes button {
+            padding: 9px 11px;
+            font-size: 12px;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #aaa;
+            padding: 25px;
+        }
+
+        footer {
+            background-color: #101010;
+            border-top: 1px solid #383838;
+            padding: 22px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 650px) {
+            .formulario-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+                grid-column: auto;
+            }
+
+            .painel {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            nav {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">BRAVUS</a>
+        <p>Painel de administração — Objetos tema</p>
+    </header>
+
+    <nav aria-label="Menu da administração">
+        <a href="index.html">Página inicial</a>
+        <a href="login.html">Login administrativo</a>
+        <a href="objetos.html" class="ativo">Objetos tema</a>
+        <a href="usuarios.html">Usuários</a>
+    </nav>
+
+    <main>
+        <h1>Cadastro de objetos tema</h1>
+
+        <p class="introducao">
+            Cadastre, consulte, edite e exclua os objetos tema
+            da loja BRAVUS.
+        </p>
+
+        <section class="painel">
+            <h2 id="titulo-formulario">Cadastrar objeto</h2>
+
+            <form id="form-objeto">
+                <div class="formulario-grid">
+
+                    <div class="campo">
+                        <label for="nome">Nome do objeto *</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            maxlength="100"
+                            placeholder="Ex.: Pulseira masculina"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="categoria">Categoria *</label>
+                        <select id="categoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Anéis">Anéis</option>
+                            <option value="Brincos">Brincos</option>
+                            <option value="Braceletes">Braceletes</option>
+                            <option value="Cordões">Cordões</option>
+                            <option value="Piercings">Piercings</option>
+                            <option value="Pulseiras">Pulseiras</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="material">Material *</label>
+                        <input
+                            type="text"
+                            id="material"
+                            maxlength="100"
+                            placeholder="Ex.: Couro"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="preco">Preço (R$) *</label>
+                        <input
+                            type="number"
+                            id="preco"
+                            min="0"
+                            max="999999999"
+                            step="0.01"
+                            placeholder="Ex.: 49.90"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo completo">
+                        <label for="imagem">Caminho da imagem</label>
+                        <input
+                            type="text"
+                            id="imagem"
+                            maxlength="500"
+                            placeholder="Ex.: imagens/pulseira.jpg"
+                        >
+                        <span class="ajuda">
+                            Informe o caminho da imagem dentro do projeto.
+                            Deixe vazio se não houver imagem.
+                        </span>
+                    </div>
+
+                    <div class="campo completo">
+                        <label for="descricao">Descrição *</label>
+                        <textarea
+                            id="descricao"
+                            maxlength="1000"
+                            placeholder="Descreva as características do objeto."
+                            required
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <div class="botoes">
+                    <button type="submit" class="primario" id="botao-salvar">
+                        Cadastrar objeto
+                    </button>
+
+                    <button
+                        type="button"
+                        class="secundario"
+                        id="botao-cancelar"
+                        hidden
+                    >
+                        Cancelar edição
+                    </button>
+                </div>
+
+                <p id="mensagem" class="mensagem" role="status"></p>
+            </form>
+        </section>
+
+        <section class="painel">
+            <h2>Objetos cadastrados</h2>
+
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Imagem</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Material</th>
+                            <th>Preço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista-objetos">
+                        <tr>
+                            <td colspan="6" class="vazio">
+                                Carregando objetos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Autor: Matt Frota</p>
+        <p><a href="autor.html">Sobre o autor</a></p>
+        <p>&copy; 2026 BRAVUS — Joias masculinas.</p>
+    </footer>
+
+    <script>
+        const formulario = document.getElementById("form-objeto");
+        const lista = document.getElementById("lista-objetos");
+        const mensagem = document.getElementById("mensagem");
+        const tituloFormulario = document.getElementById("titulo-formulario");
+        const botaoSalvar = document.getElementById("botao-salvar");
+        const botaoCancelar = document.getElementById("botao-cancelar");
+
+        const chaveArmazenamento = "bravus_objetos_tema";
+
+        let objetos = [];
+        let idEmEdicao = null;
+        let armazenamentoDisponivel = true;
+
+        function mostrarMensagem(texto) {
+            mensagem.textContent = texto;
+            mensagem.style.display = "block";
+        }
+
+        function carregarObjetos() {
+            try {
+                const dadosSalvos = localStorage.getItem(chaveArmazenamento);
+                const dados = dadosSalvos ? JSON.parse(dadosSalvos) : [];
+
+                if (!Array.isArray(dados)) {
+                    throw new Error("Formato de dados inválido.");
+                }
+
+                objetos = dados.filter(function(objeto) {
+                    return objeto &&
+                        typeof objeto.id === "string" &&
+                        typeof objeto.nome === "string";
+                });
+            } catch (erro) {
+                objetos = [];
+                armazenamentoDisponivel = false;
+
+                mostrarMensagem(
+                    "Não foi possível ler os objetos salvos. " +
+                    "O armazenamento do navegador pode estar bloqueado " +
+                    "ou conter dados inválidos."
+                );
+            }
+        }
+
+        function salvarArmazenamento() {
+            try {
+                localStorage.setItem(
+                    chaveArmazenamento,
+                    JSON.stringify(objetos)
+                );
+
+                armazenamentoDisponivel = true;
+                return true;
+            } catch (erro) {
+                armazenamentoDisponivel = false;
+
+                mostrarMensagem(
+                    "Não foi possível salvar os dados. " +
+                    "Verifique se o armazenamento local do navegador " +
+                    "está disponível."
+                );
+
+                return false;
+            }
+        }
+
+        function criarCelula(linha, texto) {
+            const celula = document.createElement("td");
+            celula.textContent = texto ?? "";
+            linha.appendChild(celula);
+            return celula;
+        }
+
+        function formatarPreco(preco) {
+            return Number(preco).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+        }
+
+        function renderizarObjetos() {
+            lista.replaceChildren();
+
+            if (objetos.length === 0) {
+                const linha = document.createElement("tr");
+                const celula = document.createElement("td");
+
+                celula.colSpan = 6;
+                celula.className = "vazio";
+                celula.textContent = "Nenhum objeto cadastrado.";
+
+                linha.appendChild(celula);
+                lista.appendChild(linha);
+                return;
+            }
+
+            objetos.forEach(function(objeto) {
+                const linha = document.createElement("tr");
+                const celulaImagem = document.createElement("td");
+
+                if (objeto.imagem) {
+                    const imagem = document.createElement("img");
+
+                    imagem.className = "miniatura";
+                    imagem.alt = "Imagem de " + objeto.nome;
+                    imagem.loading = "lazy";
+                    imagem.src = objeto.imagem;
+
+                    imagem.addEventListener("error", function() {
+                        celulaImagem.textContent = "Imagem indisponível";
+                    }, { once: true });
+
+                    celulaImagem.appendChild(imagem);
+                } else {
+                    celulaImagem.textContent = "Sem imagem";
+                }
+
+                linha.appendChild(celulaImagem);
+
+                criarCelula(linha, objeto.nome);
+                criarCelula(linha, objeto.categoria);
+                criarCelula(linha, objeto.material);
+                criarCelula(linha, formatarPreco(objeto.preco));
+
+                const celulaAcoes = document.createElement("td");
+                const acoes = document.createElement("div");
+                acoes.className = "acoes";
+
+                const botaoEditar = document.createElement("button");
+                botaoEditar.type = "button";
+                botaoEditar.className = "secundario";
+                botaoEditar.textContent = "Editar";
+
+                botaoEditar.addEventListener("click", function() {
+                    editarObjeto(objeto.id);
+                });
+
+                const botaoExcluir = document.createElement("button");
+                botaoExcluir.type = "button";
+                botaoExcluir.className = "excluir";
+                botaoExcluir.textContent = "Excluir";
+
+                botaoExcluir.addEventListener("click", function() {
+                    excluirObjeto(objeto.id);
+                });
+
+                acoes.append(botaoEditar, botaoExcluir);
+                celulaAcoes.appendChild(acoes);
+                linha.appendChild(celulaAcoes);
+                lista.appendChild(linha);
+            });
+        }
+
+        function gerarId() {
+            if (window.crypto && typeof window.crypto.randomUUID === "function") {
+                return window.crypto.randomUUID();
+            }
+
+            return Date.now().toString(36) +
+                Math.random().toString(36).slice(2);
+        }
+
+        function limparFormulario() {
+            formulario.reset();
+            idEmEdicao = null;
+
+            tituloFormulario.textContent = "Cadastrar objeto";
+            botaoSalvar.textContent = "Cadastrar objeto";
+            botaoCancelar.hidden = true;
+        }
+
+        formulario.addEventListener("submit", function(evento) {
+            evento.preventDefault();
+
+            if (!armazenamentoDisponivel) {
+                mostrarMensagem(
+                    "O armazenamento não está disponível. " +
+                    "Recarregue a página e verifique o navegador antes de continuar."
+                );
+                return;
+            }
+
+            const nome = document.getElementById("nome").value.trim();
+            const categoria = document.getElementById("categoria").value;
+            const material = document.getElementById("material").value.trim();
+            const precoTexto = document.getElementById("preco").value;
+            const preco = Number(precoTexto);
+            const imagem = document.getElementById("imagem").value.trim();
+            const descricao = document.getElementById("descricao").value.trim();
+
+            if (
+                !nome ||
+                !categoria ||
+                !material ||
+                precoTexto === "" ||
+                !Number.isFinite(preco) ||
+                preco < 0 ||
+                preco > 999999999 ||
+                !descricao
+            ) {
+                mostrarMensagem(
+                    "Preencha corretamente todos os campos obrigatórios."
+                );
+                return;
+            }
+
+            const indice = objetos.findIndex(function(objeto) {
+                return objeto.id === idEmEdicao;
+            });
+
+            const objeto = {
+                id: idEmEdicao === null
+                    ? gerarId()
+                    : idEmEdicao,
+                nome: nome,
+                categoria: categoria,
+                material: material,
+                preco: preco,
+                imagem: imagem,
+                descricao: descricao
+            };
+
+            const objetosAnteriores = objetos.slice();
+
+            if (idEmEdicao === null) {
+                objetos.push(objeto);
+            } else if (indice !== -1) {
+                objetos[indice] = objeto;
+            } else {
+                mostrarMensagem(
+                    "O objeto que você estava editando não foi encontrado."
+                );
+                return;
+            }
+
+            if (!salvarArmazenamento()) {
+                objetos = objetosAnteriores;
+                renderizarObjetos();
+                return;
+            }
+
+            renderizarObjetos();
+            limparFormulario();
+
+            mostrarMensagem(
+                idEmEdicao === null
+                    ? "Objeto cadastrado com sucesso!"
+                    : "Objeto atualizado com sucesso!"
+            );
+        });
+
+        function editarObjeto(id) {
+            const objeto = objetos.find(function(item) {
+                return item.id === id;
+            });
+
+            if (!objeto) {
+                mostrarMensagem("Objeto não encontrado.");
+                return;
+            }
+
+            idEmEdicao = objeto.id;
+
+            document.getElementById("nome").value = objeto.nome;
+            document.getElementById("categoria").value = objeto.categoria;
+            document.getElementById("material").value = objeto.material;
+            document.getElementById("preco").value = objeto.preco;
+            document.getElementById("imagem").value = objeto.imagem || "";
+            document.getElementById("descricao").value = objeto.descricao || "";
+
+            tituloFormulario.textContent = "Editar objeto";
+            botaoSalvar.textContent = "Salvar alterações";
+            botaoCancelar.hidden = false;
+
+            mensagem.style.display = "none";
+
+            document.getElementById("nome").focus();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function excluirObjeto(id) {
+            const indice = objetos.findIndex(function(objeto) {
+                return objeto.id === id;
+            });
+
+            if (indice === -1) {
+                mostrarMensagem("Objeto não encontrado.");
+                return;
+            }
+
+            if (!window.confirm(
+                "Deseja realmente excluir o objeto \"" +
+                objetos[indice].nome + "\"?"
+            )) {
+                return;
+            }
+
+            const objetosAnteriores = objetos.slice();
+            objetos.splice(indice, 1);
+
+            if (!salvarArmazenamento()) {
+                objetos = objetosAnteriores;
+                renderizarObjetos();
+                return;
+            }
+
+            if (idEmEdicao === id) {
+                limparFormulario();
+            }
+
+            renderizarObjetos();
+            mostrarMensagem("Objeto excluído com sucesso!");
+        }
+
+        botaoCancelar.addEventListener("click", function() {
+            limparFormulario();
+            mostrarMensagem("Edição cancelada.");
+        });
+
+        carregarObjetos();
+        renderizarObjetos();
+    </script>
+
+</body>
+</html>

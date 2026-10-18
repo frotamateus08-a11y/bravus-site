@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRAVUS | Gerenciar Usuários</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #eee;
+        }
+
+        header {
+            background: #080808;
+            padding: 22px;
+            text-align: center;
+            border-bottom: 2px solid #c9a227;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #c9a227;
+            letter-spacing: 4px;
+        }
+
+        header p {
+            margin-bottom: 0;
+            color: #bbb;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 15px;
+            background: #1b1b1b;
+        }
+
+        nav a {
+            color: #eee;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #c9a227;
+        }
+
+        main {
+            width: 92%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        h2 {
+            color: #c9a227;
+        }
+
+        .painel {
+            background: #1b1b1b;
+            padding: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #383838;
+            border-radius: 8px;
+        }
+
+        .campo {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+
+        input:focus, select:focus {
+            outline: 1px solid #c9a227;
+            border-color: #c9a227;
+        }
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            padding: 11px 17px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:focus-visible,
+        nav a:focus-visible,
+        footer a:focus-visible {
+            outline: 2px solid #c9a227;
+            outline-offset: 3px;
+        }
+
+        .principal {
+            background: #c9a227;
+            color: #111;
+        }
+
+        .secundario {
+            background: #444;
+            color: #fff;
+        }
+
+        .editar {
+            background: #c9a227;
+            color: #111;
+            margin: 3px;
+        }
+
+        .excluir {
+            background: #a83232;
+            color: #fff;
+            margin: 3px;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            color: #c9a227;
+            background: #242424;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            color: #c9a227;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            background: #080808;
+            border-top: 1px solid #c9a227;
+            color: #bbb;
+        }
+
+        footer a {
+            color: #c9a227;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                width: 95%;
+            }
+
+            .painel {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>BRAVUS</h1>
+        <p>Painel administrativo — Usuários</p>
+    </header>
+
+    <nav aria-label="Menu da administração">
+        <a href="index.html">Loja</a>
+        <a href="login.html">Login</a>
+        <a href="objetos.html">Objetos</a>
+        <a href="usuarios.html" aria-current="page">Usuários</a>
+    </nav>
+
+    <main>
+        <section class="painel">
+            <h2 id="titulo-formulario">Cadastrar usuário</h2>
+
+            <form id="form-usuario">
+                <div class="campo">
+                    <label for="nome">Nome completo:</label>
+                    <input type="text" id="nome" required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="campo">
+                    <label for="usuario">Nome de usuário:</label>
+                    <input type="text" id="usuario" required>
+                </div>
+
+                <div class="campo">
+                    <label for="perfil">Perfil de acesso:</label>
+                    <select id="perfil" required>
+                        <option value="Usuário">Usuário</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+
+                <div class="botoes">
+                    <button type="submit" class="principal" id="botao-salvar">
+                        Cadastrar usuário
+                    </button>
+
+                    <button type="button" class="secundario"
+                        id="botao-cancelar" hidden>
+                        Cancelar edição
+                    </button>
+                </div>
+
+                <p id="mensagem" class="mensagem" role="status"
+                    aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section class="painel">
+            <h2>Usuários cadastrados</h2>
+
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Usuário</th>
+                            <th>Perfil</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista-usuarios">
+                        <tr>
+                            <td colspan="5">Carregando usuários...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Autor: Matt Frota</p>
+        <p><a href="autor.html">Sobre o autor</a></p>
+        <p>&copy; 2026 BRAVUS — Projeto acadêmico</p>
+    </footer>
+
+    <script>
+        const CHAVE = "bravus_usuarios";
+
+        const formulario = document.getElementById("form-usuario");
+        const lista = document.getElementById("lista-usuarios");
+        const mensagem = document.getElementById("mensagem");
+        const titulo = document.getElementById("titulo-formulario");
+        const botaoSalvar = document.getElementById("botao-salvar");
+        const botaoCancelar = document.getElementById("botao-cancelar");
+
+        let usuarios = [];
+        let indiceEdicao = null;
+        let armazenamentoDisponivel = true;
+
+        function carregarUsuarios() {
+            try {
+                const dados = localStorage.getItem(CHAVE);
+                const registros = dados ? JSON.parse(dados) : [];
+
+                if (!Array.isArray(registros)) {
+                    throw new Error("Formato de dados inválido.");
+                }
+
+                usuarios = registros.filter(usuario =>
+                    usuario &&
+                    typeof usuario.nome === "string" &&
+                    typeof usuario.email === "string" &&
+                    typeof usuario.usuario === "string" &&
+                    typeof usuario.perfil === "string"
+                );
+
+                renderizarUsuarios();
+            } catch (erro) {
+                armazenamentoDisponivel = false;
+                usuarios = [];
+                renderizarUsuarios();
+
+                mensagem.textContent =
+                    "Não foi possível carregar os dados salvos. Verifique o armazenamento do navegador.";
+            }
+        }
+
+        function salvarUsuarios() {
+            try {
+                localStorage.setItem(CHAVE, JSON.stringify(usuarios));
+                return true;
+            } catch (erro) {
+                armazenamentoDisponivel = false;
+                mensagem.textContent =
+                    "Não foi possível salvar os dados neste navegador. Verifique o armazenamento disponível.";
+                return false;
+            }
+        }
+
+        function renderizarUsuarios() {
+            lista.textContent = "";
+
+            if (usuarios.length === 0) {
+                const linha = document.createElement("tr");
+                const celula = document.createElement("td");
+
+                celula.colSpan = 5;
+                celula.textContent = "Nenhum usuário cadastrado.";
+
+                linha.appendChild(celula);
+                lista.appendChild(linha);
+                return;
+            }
+
+            usuarios.forEach((usuario, indice) => {
+                const linha = document.createElement("tr");
+
+                [
+                    usuario.nome,
+                    usuario.email,
+                    usuario.usuario,
+                    usuario.perfil
+                ].forEach(valor => {
+                    const celula = document.createElement("td");
+                    celula.textContent = valor;
+                    linha.appendChild(celula);
+                });
+
+                const celulaAcoes = document.createElement("td");
+
+                const botaoEditar = document.createElement("button");
+                botaoEditar.textContent = "Editar";
+                botaoEditar.className = "editar";
+                botaoEditar.type = "button";
+                botaoEditar.addEventListener("click", () => {
+                    editarUsuario(indice);
+                });
+
+                const botaoExcluir = document.createElement("button");
+                botaoExcluir.textContent = "Excluir";
+                botaoExcluir.className = "excluir";
+                botaoExcluir.type = "button";
+                botaoExcluir.addEventListener("click", () => {
+                    excluirUsuario(indice);
+                });
+
+                celulaAcoes.append(botaoEditar, botaoExcluir);
+                linha.appendChild(celulaAcoes);
+                lista.appendChild(linha);
+            });
+        }
+
+        formulario.addEventListener("submit", function(evento) {
+            evento.preventDefault();
+
+            if (!armazenamentoDisponivel) {
+                mensagem.textContent =
+                    "Não é possível salvar enquanto o armazenamento estiver indisponível.";
+                return;
+            }
+
+            const novoUsuario = {
+                nome: document.getElementById("nome").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                usuario: document.getElementById("usuario").value.trim(),
+                perfil: document.getElementById("perfil").value
+            };
+
+            if (
+                !novoUsuario.nome ||
+                !novoUsuario.email ||
+                !novoUsuario.usuario
+            ) {
+                mensagem.textContent =
+                    "Preencha todos os campos obrigatórios.";
+                return;
+            }
+
+            const usuarioDuplicado = usuarios.some((item, indice) =>
+                indice !== indiceEdicao &&
+                (
+                    item.usuario.toLowerCase() ===
+                        novoUsuario.usuario.toLowerCase() ||
+                    item.email.toLowerCase() ===
+                        novoUsuario.email.toLowerCase()
+                )
+            );
+
+            if (usuarioDuplicado) {
+                mensagem.textContent =
+                    "Já existe um usuário com esse nome de usuário ou e-mail.";
+                return;
+            }
+
+            const estavaEditando = indiceEdicao !== null;
+            const usuariosAnteriores = [...usuarios];
+
+            if (estavaEditando) {
+                usuarios[indiceEdicao] = novoUsuario;
+            } else {
+                usuarios.push(novoUsuario);
+            }
+
+            if (!salvarUsuarios()) {
+                usuarios = usuariosAnteriores;
+                renderizarUsuarios();
+                return;
+            }
+
+            renderizarUsuarios();
+            limparFormulario();
+
+            mensagem.textContent = estavaEditando
+                ? "Usuário atualizado com sucesso!"
+                : "Usuário cadastrado com sucesso!";
+        });
+
+        function editarUsuario(indice) {
+            const usuario = usuarios[indice];
+
+            if (!usuario) {
+                mensagem.textContent =
+                    "Não foi possível localizar esse usuário.";
+                return;
+            }
+
+            document.getElementById("nome").value = usuario.nome;
+            document.getElementById("email").value = usuario.email;
+            document.getElementById("usuario").value = usuario.usuario;
+            document.getElementById("perfil").value = usuario.perfil;
+
+            indiceEdicao = indice;
+            titulo.textContent = "Editar usuário";
+            botaoSalvar.textContent = "Salvar alterações";
+            botaoCancelar.hidden = false;
+
+            mensagem.textContent =
+                "Edite os dados e salve as alterações.";
+
+            formulario.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function excluirUsuario(indice) {
+            if (!usuarios[indice]) {
+                mensagem.textContent =
+                    "Não foi possível localizar esse usuário.";
+                return;
+            }
+
+            if (!confirm("Deseja realmente excluir este usuário?")) {
+                return;
+            }
+
+            if (!armazenamentoDisponivel) {
+                mensagem.textContent =
+                    "Não é possível excluir enquanto o armazenamento estiver indisponível.";
+                return;
+            }
+
+            const usuariosAnteriores = [...usuarios];
+            usuarios.splice(indice, 1);
+
+            if (!salvarUsuarios()) {
+                usuarios = usuariosAnteriores;
+                renderizarUsuarios();
+                return;
+            }
+
+            if (indiceEdicao === indice) {
+                limparFormulario();
+            } else if (
+                indiceEdicao !== null &&
+                indice < indiceEdicao
+            ) {
+                indiceEdicao--;
+            }
+
+            renderizarUsuarios();
+            mensagem.textContent = "Usuário excluído com sucesso!";
+        }
+
+        function limparFormulario() {
+            formulario.reset();
+            indiceEdicao = null;
+            titulo.textContent = "Cadastrar usuário";
+            botaoSalvar.textContent = "Cadastrar usuário";
+            botaoCancelar.hidden = true;
+        }
+
+        botaoCancelar.addEventListener("click", function() {
+            limparFormulario();
+            mensagem.textContent = "Edição cancelada.";
+        });
+
+        carregarUsuarios();
+    </script>
+</body>
+</html>
